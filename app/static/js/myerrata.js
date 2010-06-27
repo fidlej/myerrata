@@ -7,7 +7,7 @@ var MyErrata = $.extend({
         start: false
     }, window.MyErrata);
 
-function startEditing() {
+var startEditing = (function() {
     $.fn.rebind = function(eventType, handler) {
         return this.unbind(eventType).bind(eventType, handler);
     }
@@ -160,19 +160,25 @@ function startEditing() {
         return false;
     }
 
-    // Wrap all non-empty text nodes into
-    // non-editable and editable <span/>.
-    // The editable <span/> could be modified or duplicated by the user.
-    //
-    // A <div/> is used instead <span/> to get around a FF bug:
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=546662
-    $("*", document.body).not('script').not('.myerrata-noneditable').add(document.body).contents().filter(function() {
-        return this.nodeType === 3 && $.trim(this.nodeValue) !== '';
-    }).wrap('<div style="display:inline" class="myerrata-text"><span contenteditable="true" /></span>')
-    .parent().parent().hover(lightBg, revertBg).bind(
-            'click.myerrata', addSubmitButtons);
+    function createWrappers() {
+        // Wraps all non-empty text nodes into
+        // non-editable and editable <span/>.
+        // The editable <span/> could be modified or duplicated by the user.
+        //
+        // A <div/> is used instead <span/> to get around a FF bug:
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=546662
+        var textNodes = $("*", document.body).not('script').not('.myerrata-noneditable').add(document.body).contents().filter(function() {
+            return this.nodeType === 3 && $.trim(this.nodeValue) !== '';
+        }).wrap('<div style="display:inline" class="myerrata-text"><span contenteditable="true" /></span>');
+        return textNodes.parent().parent();
+    }
 
-}
+    return function() {
+        var wrappers = createWrappers();
+        wrappers.hover(lightBg, revertBg).bind(
+                'click.myerrata', addSubmitButtons);
+    };
+})();
 
 function insertDefaultCss() {
     var head = $('head').eq(0);
