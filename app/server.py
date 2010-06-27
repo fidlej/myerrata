@@ -14,9 +14,15 @@ class Handler(webapp.RequestHandler):
     def write(self, text):
         self.response.out.write(text)
 
-    def write_json(self, array):
+    def write_json(self, array, jsonp_callback=u""):
         from django.utils import simplejson
-        self.write(simplejson.dumps(array))
+        json = simplejson.dumps(array)
+        if jsonp_callback:
+            result = u"%s(%s)" % (jsonp_callback, json)
+        else:
+            result = json
+
+        self.write(result)
 
 
 class Save(Handler):
@@ -67,6 +73,7 @@ class Fixes(Handler):
         from src import diffing, reading
 
         url = self.request.get("url")
+        callback = self.request.get("callback")
         fixes = reading.find_fixes(url)
         results = []
         for fix in fixes:
@@ -76,7 +83,7 @@ class Fixes(Handler):
                 pos=fix.pos,
                 marked=marked))
 
-        self.write_json(dict(fixes=results))
+        self.write_json(dict(fixes=results), jsonp_callback=callback)
 
 
 

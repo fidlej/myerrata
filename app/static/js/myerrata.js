@@ -7,7 +7,16 @@ window.MyErrata = $.extend({
         start: false
     }, window.MyErrata);
 
-var editingEnabled = false;
+var state = {
+    editingEnabled: false,
+    fixes: undefined
+};
+
+function logError() {
+    if (window.console && window.console.error) {
+        window.console.error('error', arguments);
+    }
+}
 
 var startEditing = (function() {
     $.fn.rebind = function(eventType, handler) {
@@ -79,12 +88,6 @@ var startEditing = (function() {
         // We cannot remove the form quickly. It would cancel the request.
     }
 
-    function logError() {
-        if (window.console && window.console.error) {
-            window.console.error('error', arguments);
-        }
-    }
-
     // Event callbacks.
     function lightBg() {
         $(this).addClass('myerrata-hover');
@@ -113,7 +116,7 @@ var startEditing = (function() {
         function removeButtons() {
             saveButton.remove();
             cancelButton.remove();
-            if (editingEnabled) {
+            if (state.editingEnabled) {
                 wrapper.rebind('click.myerrata', addSubmitButtons);
             } else {
                 // Disabling editing also on the arrived marked text.
@@ -167,7 +170,7 @@ var startEditing = (function() {
         return false;
     }
 
-    function createWrappers() {
+    function createWrappers(fixes) {
         // Wraps all non-empty text nodes into
         // non-editable and editable <span/>.
         // The editable <span/> could be modified or duplicated by the user.
@@ -183,11 +186,17 @@ var startEditing = (function() {
     var wrappersCreated = false;
 
     return function() {
-        editingEnabled = true;
+        state.editingEnabled = true;
         var wrappers;
         if (!wrappersCreated) {
-            wrappers = createWrappers();
+            if (state.fixes === undefined) {
+                // We will wait for the Ajax result.
+                return;
+            }
+
+            wrappers = createWrappers(state.fixes);
             wrappersCreated = true;
+            state.fixes = null;
         } else {
             wrappers = $('.myerrata-text');
         }
@@ -198,6 +207,24 @@ var startEditing = (function() {
             .find('*').attr('contentEditable', true);
     };
 })();
+
+function fetchFixes() {
+    $.ajax({
+        url: MyErrata.host + '/api/fixes',
+        data: {
+            url: window.location.href
+        },
+        cache: false,
+        dataType: 'jsonp',
+        error: logError,
+        success: function(data) {
+            state.fixes = data.fixes;
+            if (state.editingEnabled) {
+                startEditing();
+            }
+        }
+        });
+}
 
 function insertDefaultCss() {
     var head = $('head').eq(0);
@@ -212,8 +239,8 @@ function insertDefaultCss() {
 }
 
 MyErrata.toggleEditing = function() {
-    if (editingEnabled) {
-        editingEnabled = false;
+    if (state.editingEnabled) {
+        state.editingEnabled = false;
         $('.myerrata-text').unbind('.myerrata')
             .find('*').attr('contentEditable', false);
     } else {
@@ -222,6 +249,7 @@ MyErrata.toggleEditing = function() {
 };
 
 $(document).ready(function() {
+    fetchFixes();
     insertDefaultCss();
     if (MyErrata.start) {
         startEditing();
