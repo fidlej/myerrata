@@ -2,10 +2,12 @@
 (function() {
 var mainCode = function($) {
 // Default options
-var MyErrata = $.extend({
+window.MyErrata = $.extend({
         host: 'http://www.myerrata.com',
         start: false
     }, window.MyErrata);
+
+var editingEnabled = false;
 
 var startEditing = (function() {
     $.fn.rebind = function(eventType, handler) {
@@ -173,10 +175,22 @@ var startEditing = (function() {
         return textNodes.parent().parent();
     }
 
+    var wrappersCreated = false;
+
     return function() {
-        var wrappers = createWrappers();
-        wrappers.hover(lightBg, revertBg).bind(
-                'click.myerrata', addSubmitButtons);
+        editingEnabled = true;
+        var wrappers;
+        if (!wrappersCreated) {
+            wrappers = createWrappers();
+            wrappersCreated = true;
+        } else {
+            wrappers = $('.myerrata-text');
+        }
+
+        wrappers.bind('mouseenter.myerrata', lightBg)
+            .bind('mouseleave.myerrata', revertBg)
+            .bind('click.myerrata', addSubmitButtons)
+            .find('*').attr('contenteditable', true);
     };
 })();
 
@@ -191,6 +205,16 @@ function insertDefaultCss() {
     '.myerrata-text ins { color: green}\n' +
     '</style>').prependTo(head);
 }
+
+MyErrata.toggleEditing = function() {
+    if (editingEnabled) {
+        editingEnabled = false;
+        $('.myerrata-text').unbind('.myerrata')
+            .find('*').attr('contentEditable', false);
+    } else {
+        startEditing();
+    }
+};
 
 $(document).ready(function() {
     insertDefaultCss();
