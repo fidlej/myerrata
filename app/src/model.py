@@ -20,7 +20,7 @@ class Fix(db.Model):
         """Prepares all required properties before
         calling the constructor.
         """
-        url = _normalize_url(url)
+        url = normalize_url(url)
         key_name = _compute_key_name(url, pos, orig_text)
         updated_at = int(time.time())
         return Fix(key_name=key_name,
@@ -34,7 +34,7 @@ class Fix(db.Model):
 
 URL_PATTERN = re.compile(r"^https?://([^#]*)")
 
-def _normalize_url(url):
+def normalize_url(url):
     match = URL_PATTERN.match(url)
     if match is None:
         raise ValueError("Invalid URL: %r" % url)

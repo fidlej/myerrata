@@ -122,7 +122,7 @@ function startEditing() {
                 var pos = 0;
                 // TODO: use more stable page_order
                 var page_order = wrapper.offset().top;
-                var target = MyErrata.host + '/save';
+                var target = MyErrata.host + '/api/save';
                 var data = {
                         url: window.location.href,
                         orig: origText,

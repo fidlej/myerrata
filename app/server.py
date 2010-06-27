@@ -14,6 +14,10 @@ class Handler(webapp.RequestHandler):
     def write(self, text):
         self.response.out.write(text)
 
+    def write_json(self, array):
+        from django.utils import simplejson
+        self.write(simplejson.dumps(array))
+
 
 class Save(Handler):
     def options(self):
@@ -37,7 +41,6 @@ class Save(Handler):
         pos ... 0 for an unique original text. It is the number
             of the same preceding texts on the page.
         """
-        from django.utils import simplejson
         from src import diffing, writing
         # The incoming Content-Type is ignored.
         # XDomainRequest sends everything as text/plain.
@@ -56,7 +59,25 @@ class Save(Handler):
         result = dict(marked='<span contenteditable="true">%s</span>' % marked);
         self._set_cors_headers()
         # We keep the text/html content-type. It is needed by iframes.
-        self.write(simplejson.dumps(result))
+        self.write_json(result)
+
+
+class Fixes(Handler):
+    def get(self):
+        from src import diffing, reading
+
+        url = self.request.get("url")
+        fixes = reading.find_fixes(url)
+        results = []
+        for fix in fixes:
+            marked = diffing.mark_changes(fix.orig_text, fix.new_text)
+            results.append(dict(
+                orig=fix.orig_text,
+                pos=fix.pos,
+                marked=marked))
+
+        self.write_json(dict(fixes=results))
+
 
 
 class NotFound404(Handler):
@@ -71,7 +92,8 @@ class NotFound404(Handler):
 
 app = webapp.WSGIApplication(
         [
-            ("/save", Save),
+            ("/api/save", Save),
+            ("/api/fixes", Fixes),
             ("/.*", NotFound404),
         ],
         debug=DEBUG)
