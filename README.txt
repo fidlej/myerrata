@@ -8,7 +8,7 @@ See it in action on http://www.myerrata.com/
 
 License and Credits
 -------------------
-source code by Ivo Danihelka:
+source code by Ivo Danihelka <ivo@danihelka.net>:
     MIT license
 
 app/static/img/myerrata.png by http://www.famfamfam.com/lab/icons/silk/:
