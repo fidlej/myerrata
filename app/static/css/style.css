@@ -1,0 +1,67 @@
+
+/* Browser reset */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
+    margin:0;
+    padding:0;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+img {
+    border:0;
+}
+
+/* Global style */
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 10px;
+    color: #fda603;
+}
+
+h1 { font-size: 160%; }
+h2 { font-size: 120%; }
+
+p, blockquote, form, label, ul, ol {
+    margin-bottom: 20px;
+}
+
+ol {
+    margin-left: 30px;
+}
+
+ol li {
+    margin-bottom: 5px;
+}
+
+body {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 100%;
+    background-color: #E5E5FF;
+}
+
+
+#content {
+    margin: 20px 10%;
+    padding: 20px 30px;
+    background-color: #FFFFFF;
+    background-image: url("/static/img/man.png");
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
+#top {
+    padding-right: 140px;
+}
+
+#footer {
+    margin-top: 80px;
+    font-size: 75%;
+    text-align: center;
+}
+
+a.bookmarklet {
+    border: 2px groove black; padding: 0 5px 2px;
+    background-color: #eee; color: black;
+    font-family: sans-serif; font-size: 10pt; text-decoration: none;
+}
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>MyErrata</title>
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+    <meta name="description" content="Fix and see errata for any web page."/>
+</head>
+<body>
+<div id="content">
+<div id="top">
+<h1>MyErrata</h1>
+<p>
+MyErrata is a collector of web page fixes. You could <em>fix a typo</em> on any web page.
+</p>
+<h2>Example</h2>
+<ol>
+<li>Start editing this page by clicking on its number of fixes: <a title="Edit this page" href="javascript:alert('hello%20world')" class="myerrata-noneditable"><img alt="Edit" src="/static/img/myerrata.png"/> N fixes</a></li>
+<li>Modify a text. Save it.</li>
+</ol>
+</div>
+
+<h2>How to fix any web page</h2>
+<p>
+MyErrata bookmarklet allows you to activate the editing on any web page.
+Bookmark or drag the link to your bookmarks bar:
+<a title="MyErrata Bookmarklet - Drag this to your bookmarks toolbar" class="bookmarklet myerrata-noneditable" href='javascript:(function(a,c,b){if(a.MyErrata)a.MyErrata.toggleEditing();else{a.MyErrata={host:"http://frontend:9999",start:true};b=c.createElement("script");b.type="text/javascript";b.src=a.MyErrata.host+"/static/js/myerrata.js";(c.getElementsByTagName("head")[0]||c.body).appendChild(b)}})(window,document,"0.1");'>MyErrata</a>
+</p>
+
+<div id="footer">
+    <hr/>
+    MyErrata is <a href="http://code.google.com/p/myerrata/">open source</a>.</div>
+</div>
+
+</body>
+</html>
+

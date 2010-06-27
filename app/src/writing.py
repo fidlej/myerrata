@@ -1,0 +1,7 @@
+
+from src.model import Fix
+
+def save_fix(url, orig_text, new_text, pos, page_order):
+    fix = Fix.prepare(url, orig_text, new_text, pos, page_order)
+    fix.put()
+
