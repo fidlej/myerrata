@@ -16,8 +16,10 @@ MyErrata is a collector of web page fixes. You could <em>fix a typo</em> on any 
 </p>
 <h2>Example</h2>
 <ol>
-<li>Start editing this page by clicking on its number of fixes: <a title="Edit this page" href="javascript:alert('hello%20world')" class="myerrata-noneditable"><img alt="Edit" src="/static/img/myerrata.png"/> N fixes</a></li>
+<li>Start editing this page: 
+<a title="MyErrata Bookmarklet - Drag this to your bookmarks toolbar" class="bookmarklet myerrata-noneditable" href='javascript:(function(a,c,b){if(a.MyErrata)a.MyErrata.toggleEditing();else{a.MyErrata={host:"http://frontend:9999",start:true};b=c.createElement("script");b.type="text/javascript";b.src=a.MyErrata.host+"/static/js/myerrata.js";(c.getElementsByTagName("head")[0]||c.body).appendChild(b)}})(window,document,"0.1");'>MyErrata</a></li>
 <li>Modify a text. Save it.</li>
+<li>Click on the MyErrata button again. It will stop the editing.</li>
 </ol>
 </div>
 

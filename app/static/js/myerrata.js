@@ -113,7 +113,12 @@ var startEditing = (function() {
         function removeButtons() {
             saveButton.remove();
             cancelButton.remove();
-            wrapper.rebind('click.myerrata', addSubmitButtons);
+            if (editingEnabled) {
+                wrapper.rebind('click.myerrata', addSubmitButtons);
+            } else {
+                // Disabling editing also on the arrived marked text.
+                wrapper.find('*').attr('contentEditable', false);
+            }
         }
 
         saveButton.insertAfter(this)
@@ -190,7 +195,7 @@ var startEditing = (function() {
         wrappers.bind('mouseenter.myerrata', lightBg)
             .bind('mouseleave.myerrata', revertBg)
             .bind('click.myerrata', addSubmitButtons)
-            .find('*').attr('contenteditable', true);
+            .find('*').attr('contentEditable', true);
     };
 })();
 
