@@ -2,6 +2,7 @@
 import logging
 import wsgiref.handlers
 from google.appengine.ext import webapp
+from google.appengine.ext.webapp.util import run_wsgi_app
 
 from src import sane
 
@@ -111,7 +112,7 @@ app = webapp.WSGIApplication(
         debug=DEBUG)
 
 def main():
-    wsgiref.handlers.CGIHandler().run(app)
+    run_wsgi_app(app)
 
 if __name__ == "__main__":
     from pylib import autoretry
