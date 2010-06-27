@@ -49,10 +49,10 @@ def _compute_key_name(url, pos, orig_text):
         raise ValueError("Invalid URL domain: %r" % url)
 
     m = hashlib.sha1()
-    m.update(url)
+    m.update(url.encode("utf-8"))
     m.update('#')
     m.update(str(pos))
     m.update('#')
-    m.update(orig_text)
+    m.update(orig_text.encode("utf-8"))
     return domain + "#" + base64.urlsafe_b64encode(m.digest())
 

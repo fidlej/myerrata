@@ -3,7 +3,7 @@ from difflib import SequenceMatcher
 from cgi import escape
 import re
 
-NON_WORD_PATTERN = re.compile(r'(\w+)')
+NON_WORD_PATTERN = re.compile(r'(\w+)', re.UNICODE)
 
 def mark_changes(orig, new):
     return _mark_sequence_changes(NON_WORD_PATTERN.split(orig),
