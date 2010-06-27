@@ -1,5 +1,17 @@
 
 (function() {
+function logError() {
+    if (window.console && window.console.error) {
+        window.console.error('error', arguments);
+    } else {
+        var args = Array.prototype.slice.call(arguments, 0);
+        var msg = args.join(', ');
+        setTimeout(function() {
+            throw new Error(msg);
+        }, 0);
+    }
+}
+
 var mainCode = function($) {
 // Default options
 window.MyErrata = $.extend({
@@ -11,12 +23,6 @@ var state = {
     editingEnabled: false,
     fixes: undefined
 };
-
-function logError() {
-    if (window.console && window.console.error) {
-        window.console.error('error', arguments);
-    }
-}
 
 var startEditing = (function() {
     $.fn.rebind = function(eventType, handler) {
@@ -271,13 +277,11 @@ window.MyErrata.toggleEditing = function() {
     }
 };
 
-$(document).ready(function() {
-    fetchFixes();
-    insertDefaultCss();
-    if (window.MyErrata.start) {
-        startEditing();
-    }
-});
+fetchFixes();
+insertDefaultCss();
+if (window.MyErrata.start) {
+    startEditing();
+}
 
 };
 
