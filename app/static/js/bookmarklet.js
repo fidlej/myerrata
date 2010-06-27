@@ -3,7 +3,7 @@
         w.MyErrata.toggleEditing();
     } else {
         w.MyErrata = {
-            host:'http://frontend:9999',
+            host:'http://www.myerrata.com',
             start:true
         };
         e = d.createElement('script'); e.type = 'text/javascript';

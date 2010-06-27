@@ -132,7 +132,7 @@ var startEditing = (function() {
                 var pos = 0;
                 // TODO: use more stable page_order
                 var page_order = wrapper.offset().top;
-                var target = MyErrata.host + '/api/save';
+                var target = window.MyErrata.host + '/api/save';
                 var data = {
                         url: window.location.href,
                         orig: origText,
@@ -233,7 +233,7 @@ var startEditing = (function() {
 
 function fetchFixes() {
     $.ajax({
-        url: MyErrata.host + '/api/fixes',
+        url: window.MyErrata.host + '/api/fixes',
         data: {
             url: window.location.href
         },
@@ -261,7 +261,7 @@ function insertDefaultCss() {
     '</style>').prependTo(head);
 }
 
-MyErrata.toggleEditing = function() {
+window.MyErrata.toggleEditing = function() {
     if (state.editingEnabled) {
         state.editingEnabled = false;
         $('.myerrata-text').unbind('.myerrata')
@@ -274,7 +274,7 @@ MyErrata.toggleEditing = function() {
 $(document).ready(function() {
     fetchFixes();
     insertDefaultCss();
-    if (MyErrata.start) {
+    if (window.MyErrata.start) {
         startEditing();
     }
 });
