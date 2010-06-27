@@ -180,7 +180,30 @@ var startEditing = (function() {
         var textNodes = $("*", document.body).not('script').not('.myerrata-noneditable').add(document.body).contents().filter(function() {
             return this.nodeType === 3 && $.trim(this.nodeValue) !== '';
         }).wrap('<div style="display:inline" class="myerrata-text"><span contenteditable="true" /></span>');
-        return textNodes.parent().parent();
+
+        var origTextWrappers = {};
+        textNodes.each(function() {
+            var list = origTextWrappers[this.nodeValue] || [];
+            list.push(this.parentNode.parentNode);
+            origTextWrappers[this.nodeValue] = list;
+        });
+
+        // It is needed to get the wrappers
+        // before replacing the text nodes by fixes.
+        var wrappers = textNodes.parent().parent();
+        textNodes = null;
+
+        // Applying the existing fixes
+        for (var key in fixes) {
+            var fix = fixes[key];
+            var wrapper = (origTextWrappers[fix.orig] || [])[fix.pos];
+            if (wrapper) {
+                $(wrapper).data('origText.myerrata', fix.orig)
+                    .html(fix.marked);
+            }
+        }
+
+        return wrappers;
     }
 
     var wrappersCreated = false;
