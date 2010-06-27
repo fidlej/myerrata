@@ -277,10 +277,18 @@ window.MyErrata.toggleEditing = function() {
     }
 };
 
-fetchFixes();
-insertDefaultCss();
-if (window.MyErrata.start) {
-    startEditing();
+$(document).ready(function() {
+    fetchFixes();
+    insertDefaultCss();
+    if (window.MyErrata.start) {
+        startEditing();
+    }
+});
+// Firefox 3.5 or older don't have document.readyState.
+// Let's assume that the bookmarklet is clicked after onload.
+// http://dev.jquery.com/ticket/4196
+if (typeof document.readyState === 'undefined') {
+    $.ready();
 }
 
 };
