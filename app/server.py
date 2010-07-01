@@ -27,7 +27,9 @@ class Handler(webapp.RequestHandler):
 
 
 def _mark_editable(html):
-    return '<span contenteditable="true">%s</span>' % html
+    # The space around the marked text is important.
+    # It allows the user to add a text outside of a <del> tag.
+    return '<span contenteditable="true"> %s </span>' % html
 
 
 class Save(Handler):
