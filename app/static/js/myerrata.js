@@ -25,8 +25,8 @@ var state = {
 };
 
 var startEditing = (function() {
-    $.fn.rebind = function(eventType, handler) {
-        return this.unbind(eventType).bind(eventType, handler);
+    function rebind(jq, eventType, handler) {
+        return jq.unbind(eventType).bind(eventType, handler);
     }
 
     function isCrossPostSupported() {
@@ -123,7 +123,7 @@ var startEditing = (function() {
             saveButton.remove();
             cancelButton.remove();
             if (state.editingEnabled) {
-                wrapper.rebind('click.myerrata', addSubmitButtons);
+                rebind(wrapper, 'click.myerrata', addSubmitButtons);
             } else {
                 // Disabling editing also on the arrived marked text.
                 wrapper.find('*').attr('contentEditable', false);
@@ -172,7 +172,7 @@ var startEditing = (function() {
             });
 
         // Prevent to visit a URL.
-        wrapper.rebind('click.myerrata', ignoreClick);
+        rebind(wrapper, 'click.myerrata', ignoreClick);
         return false;
     }
 
