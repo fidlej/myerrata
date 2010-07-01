@@ -176,6 +176,12 @@ var startEditing = (function() {
         return false;
     }
 
+    function createStopButton() {
+        $('<div id="myerrata_stopbutton">Stop Editing X</div>').hide()
+            .click(stopEditing)
+            .appendTo(document.body);
+    }
+
     function createWrappers(fixes) {
         // Wraps all non-empty text nodes into
         // non-editable and editable <span/>.
@@ -183,7 +189,7 @@ var startEditing = (function() {
         //
         // A <div/> is used instead <span/> to get around a FF bug:
         // https://bugzilla.mozilla.org/show_bug.cgi?id=546662
-        var textNodes = $("*", document.body).not('script').not('.myerrata-noneditable').add(document.body).contents().filter(function() {
+        var textNodes = $('*', document.body).not('script').not('.myerrata-noneditable').add(document.body).contents().filter(function() {
             return this.nodeType === 3 && $.trim(this.nodeValue) !== '';
         }).wrap('<div style="display:inline" class="myerrata-text"><span contenteditable="true" /></span>');
 
@@ -224,12 +230,14 @@ var startEditing = (function() {
             }
 
             wrappers = createWrappers(state.fixes);
+            createStopButton();
             wrappersCreated = true;
             state.fixes = null;
         } else {
             wrappers = $('.myerrata-text');
         }
 
+        $("#myerrata_stopbutton").show('fast');
         wrappers.bind('mouseenter.myerrata', lightBg)
             .bind('mouseleave.myerrata', revertBg)
             .bind('click.myerrata', addSubmitButtons)
@@ -264,14 +272,23 @@ function insertDefaultCss() {
     '.myerrata-hover { background-color: #95d6ff}\n' +
     '.myerrata-text del { color: red}\n' +
     '.myerrata-text ins { color: green}\n' +
+    '#myerrata_stopbutton { position: fixed; top: 0; right: 0;' +
+        'border: 2px groove black; padding: 0 5px 2px;' +
+        'background-color: red; color: white;' +
+        'font-family: sans-serif; font-size: 10pt; font-weight: bold}\n' +
     '</style>').prependTo(head);
+}
+
+function stopEditing() {
+    state.editingEnabled = false;
+    $("#myerrata_stopbutton").hide();
+    $('.myerrata-text').unbind('.myerrata')
+        .find('*').attr('contentEditable', false);
 }
 
 window.MyErrata.toggleEditing = function() {
     if (state.editingEnabled) {
-        state.editingEnabled = false;
-        $('.myerrata-text').unbind('.myerrata')
-            .find('*').attr('contentEditable', false);
+        stopEditing();
     } else {
         startEditing();
     }
