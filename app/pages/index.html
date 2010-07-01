@@ -35,6 +35,19 @@ Bookmark or drag the link to your bookmarks bar:
     MyErrata is <a href="http://code.google.com/p/myerrata/">open source</a>.</div>
 </div>
 
+<!--
+Pre-filling browser cache.
+-->
+<script type="text/javascript">
+(function() {
+var el = document.createElement('script');
+el.type = 'text/javascript';
+el.async = true;
+el.src = 'http://www.myerrata.com/static/js/myerrata.js';
+var s = document.getElementsByTagName('script')[0];
+s.parentNode.insertBefore(el, s);
+})();
+</script>
 </body>
 </html>
 
