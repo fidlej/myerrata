@@ -8,7 +8,7 @@ class Fix(db.Model):
     """
     url = db.StringProperty(required=True)
     orig_text = db.TextProperty(required=True)
-    new_text = db.TextProperty(required=True)
+    new_text = db.TextProperty()
     # The pos tells the position of equal orig texts on a page.
     pos = db.IntegerProperty(required=True)
     # The page_order defines visual ordering of fixes on a page.
