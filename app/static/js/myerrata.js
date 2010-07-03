@@ -134,8 +134,7 @@ var startEditing = (function() {
             .click(function() {
                 var newText = wrapper.clone(false).find('del').remove()
                     .end().text();
-                //TODO: detect the origText position.
-                var pos = 0;
+                var pos = wrapper.data('pos.myerrata') || 0;
                 // TODO: use more stable page_order
                 var page_order = wrapper.offset().top;
                 var target = window.MyErrata.host + '/api/save';
@@ -208,10 +207,19 @@ var startEditing = (function() {
         // Applying the existing fixes
         for (var key in fixes) {
             var fix = fixes[key];
-            var wrapper = (origTextWrappers[fix.orig] || [])[fix.pos];
-            if (wrapper) {
-                $(wrapper).data('origText.myerrata', fix.orig)
+            var wrapperEl = (origTextWrappers[fix.orig] || [])[fix.pos];
+            if (wrapperEl) {
+                $(wrapperEl).data('origText.myerrata', fix.orig)
                     .html(fix.marked);
+            }
+        }
+
+        // Remembering wrappers with non-zero pos
+        for (var orig in origTextWrappers) {
+            var nodes = origTextWrappers[orig];
+            for (var i = 1, wrapperEl; wrapperEl = nodes[i]; i++) {
+                console.debug('pos', i, orig, wrapperEl);
+                $(wrapperEl).data('pos.myerrata', i);
             }
         }
 
