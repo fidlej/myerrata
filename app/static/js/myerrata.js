@@ -8,6 +8,7 @@ if (window.MyErrata && window.MyErrata.toggleEditing) {
 
 // A simple placeholder for toggleEditing().
 // It will be redefined after loading jQuery.
+window.MyErrata = window.MyErrata || {};
 window.MyErrata.toggleEditing = function() {
     window.MyErrata.start = true;
 }
