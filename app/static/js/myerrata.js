@@ -1,5 +1,11 @@
 
 (function() {
+// It is OK to load myerrata.js twice.
+if (window.MyErrata && window.MyErrata.toggleEditing) {
+    window.MyErrata.toggleEditing();
+    return;
+}
+
 function logError() {
     if (window.console && window.console.error) {
         window.console.error('error', arguments);
