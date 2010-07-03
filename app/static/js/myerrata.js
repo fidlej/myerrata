@@ -218,7 +218,6 @@ var startEditing = (function() {
         for (var orig in origTextWrappers) {
             var nodes = origTextWrappers[orig];
             for (var i = 1, wrapperEl; wrapperEl = nodes[i]; i++) {
-                console.debug('pos', i, orig, wrapperEl);
                 $(wrapperEl).data('pos.myerrata', i);
             }
         }
