@@ -1,3 +1,4 @@
 ^app/static/js/.*\.min\.js
+^app/static/\.test\.html
 ^notes
 ^info\.txt
