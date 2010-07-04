@@ -8,6 +8,7 @@ class Fix(db.Model):
     """
     url = db.StringProperty(required=True)
     orig_text = db.TextProperty(required=True)
+    # The new text is already rstripped.
     new_text = db.TextProperty()
     # The pos tells the position of equal orig texts on a page.
     pos = db.IntegerProperty(required=True)
@@ -33,7 +34,7 @@ class Fix(db.Model):
 
     def mark_changes(self):
         from src import diffing
-        return diffing.mark_changes(self.orig_text, self.new_text)
+        return diffing.mark_changes(self.orig_text.rstrip(), self.new_text)
 
 
 URL_PATTERN = re.compile(r"^https?://([^#]*)")
