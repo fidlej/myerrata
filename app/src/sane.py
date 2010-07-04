@@ -12,10 +12,11 @@ def valid_int(value):
     return result
 
 
-IGNORED_PREFIX_PATTERN = re.compile(ur"^(?:https?://)?(?:www\.)?")
+URL_PREFIX_PATTERN = re.compile(ur"^(?:https?://)?(?:www\.)?([^#]*)")
 
 def valid_url_prefix(value):
     """Returns a URL prefix without the http:// and "www." prefixes.
     """
-    return IGNORED_PREFIX_PATTERN.sub(u"", value)
+    match = URL_PREFIX_PATTERN.match(value)
+    return match.group(1)
 
