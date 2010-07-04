@@ -31,6 +31,10 @@ class Fix(db.Model):
     def key_name(self):
         return self.key().name()
 
+    def mark_changes(self):
+        from src import diffing
+        return diffing.mark_changes(self.orig_text, self.new_text)
+
 
 URL_PATTERN = re.compile(r"^https?://([^#]*)")
 

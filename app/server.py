@@ -4,9 +4,7 @@ import wsgiref.handlers
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-from src import sane
-
-DEBUG = True
+from src import config, sane
 
 class Handler(webapp.RequestHandler):
     def set_header(self, name, value):
@@ -24,6 +22,10 @@ class Handler(webapp.RequestHandler):
             result = json
 
         self.write(result)
+
+    def render(self, template, **kw):
+        from src import templating
+        self.write(templating.render(template, **kw))
 
 
 def _mark_editable(html):
@@ -56,7 +58,7 @@ class Save(Handler):
         pos ... 0 for an unique original text. It is the number
             of the same preceding texts on the page.
         """
-        from src import diffing, writing
+        from src import writing
         # The incoming Content-Type is ignored.
         # XDomainRequest sends everything as text/plain.
         self.request.content_type = "application/x-www-form-urlencoded"
@@ -68,8 +70,8 @@ class Save(Handler):
         pos = sane.valid_int(self.request.get("pos"))
         page_order = sane.valid_int(self.request.get("page_order"))
 
-        writing.save_fix(url, orig, new, pos, page_order)
-        marked = _mark_editable(diffing.mark_changes(orig, new))
+        fix = writing.save_fix(url, orig, new, pos, page_order)
+        marked = _mark_editable(fix.mark_changes())
 
         result = dict(marked=marked);
         self._set_cors_headers()
@@ -79,15 +81,14 @@ class Save(Handler):
 
 class Fixes(Handler):
     def get(self):
-        from src import diffing, reading
+        from src import reading
 
         url = self.request.get("url")
         callback = self.request.get("callback")
         fixes = reading.find_fixes(url)
         results = []
         for fix in fixes:
-            marked = _mark_editable(
-                    diffing.mark_changes(fix.orig_text, fix.new_text))
+            marked = _mark_editable(fix.mark_changes())
             results.append(dict(
                 orig=fix.orig_text,
                 pos=fix.pos,
@@ -98,13 +99,13 @@ class Fixes(Handler):
 
 class Search(Handler):
     def get(self):
-        from src import diffing, reading
+        from src import reading
 
         q = sane.valid_url_prefix(self.request.get("q"))
         fixes = reading.search(q, limit=100)
-        for fix in fixes:
-            marked = diffing.mark_changes(fix.orig_text, fix.new_text)
-            self.write("%s: %s<br/>\n" % (fix.url, marked))
+
+        title = u"%s fixes" % q
+        self.render("search.html", title=title, fixes=fixes, q=q)
 
 
 class NotFound404(Handler):
@@ -124,7 +125,7 @@ app = webapp.WSGIApplication(
             ("/search", Search),
             ("/.*", NotFound404),
         ],
-        debug=DEBUG)
+        debug=config.DEBUG)
 
 def main():
     run_wsgi_app(app)

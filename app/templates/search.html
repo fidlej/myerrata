@@ -1,0 +1,17 @@
+<%inherit file="base.html"/>
+
+<form method="get" action="/search">
+<p>
+    <input type="text" name="q" value="${q}"/>
+    <input type="submit" value="Search"/>
+</p>
+</form>
+
+
+%for fix in fixes:
+<p><a href="http://${fix.url}">${fix.url}</a><br/>
+${fix.mark_changes()}
+</p>
+%endfor%
+
+

@@ -8,3 +8,4 @@ def save_fix(url, orig_text, new_text, pos, page_order):
     else:
         fix.put()
 
+    return fix

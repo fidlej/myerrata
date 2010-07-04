@@ -1,6 +1,6 @@
 
 from difflib import SequenceMatcher
-from cgi import escape
+from markupsafe import escape, Markup
 import re
 
 NON_WORD_PATTERN = re.compile(r'(\w+)', re.UNICODE)
@@ -35,10 +35,10 @@ def _is_junk(x):
     return x in " \t\n\r"
 
 def _mark_delete(seq):
-    return "<del>%s</del>" % escape("".join(seq))
+    return Markup(u"<del>%s</del>") % escape("".join(seq))
 
 def _mark_insert(seq):
-    return "<ins>%s</ins>" % escape("".join(seq))
+    return Markup(u"<ins>%s</ins>") % escape("".join(seq))
 
 def _mark_equal(seq):
     return escape("".join(seq))
