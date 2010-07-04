@@ -1,1 +1,3 @@
-# all is allowed
+User-agent: *
+Disallow: /search
+
