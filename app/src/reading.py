@@ -8,6 +8,7 @@ def find_fixes(url, limit=1000):
     return q.fetch(limit)
 
 def search(url_prefix, limit=1000):
-    q = Fix.gql("where url > :url_prefix order by url, page_order", url_prefix=url_prefix)
+    range_end = url_prefix + unichr(0x10ffff)
+    q = Fix.gql("where url >= :url_prefix and url < :range_end order by url, page_order", url_prefix=url_prefix, range_end=range_end)
     return q.fetch(limit)
 
