@@ -19,7 +19,6 @@ def to_unicode(value):
     """Converts everything to unicode.
     Invalid utf-8 chars are replaced with question marks.
     """
-    logging.warn("unicode: %r", value)
     if isinstance(value, unicode):
         return value
 
