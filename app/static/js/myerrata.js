@@ -148,8 +148,7 @@ var startEditing = (function() {
                 var newText = wrapper.clone(false).find('del').remove()
                     .end().text();
                 var pos = wrapper.data('pos.myerrata') || 0;
-                // TODO: use more stable page_order
-                var page_order = wrapper.offset().top;
+                var page_order = wrapper.data('pageOrder.myerrata');
                 var target = window.MyErrata.host + '/api/save';
                 var data = {
                         url: window.location.href,
@@ -206,10 +205,12 @@ var startEditing = (function() {
         }).wrap('<div style="display:inline" class="myerrata-text"><span contenteditable="true" /></span>');
 
         var origTextWrappers = {};
-        textNodes.each(function() {
+        textNodes.each(function(i) {
+            var wrapperEl = this.parentNode.parentNode;
             var list = origTextWrappers[this.nodeValue] || [];
-            list.push(this.parentNode.parentNode);
+            list.push(wrapperEl);
             origTextWrappers[this.nodeValue] = list;
+            $(wrapperEl).data('pageOrder.myerrata', i);
         });
 
         // It is needed to get the wrappers
@@ -350,7 +351,7 @@ function isCompatibleGeVersion(v1, v2) {
     return true;
 }
 
-// We need jQuery 1.4.1 to have $.parseJSON.
+// We need jQuery 1.4.1+ to have $.parseJSON.
 if (window.jQuery && isCompatibleGeVersion(window.jQuery.fn.jquery, '1.4.1')) {
     mainCode(window.jQuery);
 } else {
