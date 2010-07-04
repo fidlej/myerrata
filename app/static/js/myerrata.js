@@ -107,7 +107,7 @@ var startEditing = (function() {
         // We cannot remove the form quickly. It would cancel the request.
     }
 
-    // Event callbacks.
+    // --- Event callbacks.
     function lightBg() {
         $(this).addClass('myerrata-hover');
     }
@@ -145,8 +145,13 @@ var startEditing = (function() {
 
         saveButton.insertAfter(this)
             .click(function() {
+                wrapper.find('.myerrata-space').each(function() {
+                    var appended = $(this).text();
+                    $(this).text($.trim(appended));
+                });
+
                 var newText = wrapper.clone(false)
-                    .find('del, .myerrata-space').remove()
+                    .find('del').remove()
                     .end().text();
                 var pos = wrapper.data('pos.myerrata') || 0;
                 var page_order = wrapper.data('pageOrder.myerrata');
@@ -162,11 +167,7 @@ var startEditing = (function() {
                 if (isCrossPostSupported()) {
                     crossPost(target, data,
                         function(data) {
-                            // The extra space allows to add unstyled text.
-                            var suffix = '<span class="myerrata-space"> </span></span>';
-                            wrapper.html(
-                                '<span contenteditable="true">'
-                                + data.marked + suffix);
+                            wrapper.html(markEditable(data.marked));
                             removeButtons();
                         },
                         'json'
@@ -190,6 +191,13 @@ var startEditing = (function() {
         // Prevent to visit a URL.
         rebind(wrapper, 'click.myerrata', ignoreClick);
         return false;
+    }
+
+    // --- Helper functions.
+    function markEditable(markedText) {
+        // The extra space allows to add unstyled text.
+        var suffix = '<span class="myerrata-space"> </span></span>';
+        return '<span contenteditable="true">' + markedText + suffix;
     }
 
     function createStopButton() {
@@ -229,7 +237,7 @@ var startEditing = (function() {
             var wrapperEl = (origTextWrappers[fix.orig] || [])[fix.pos];
             if (wrapperEl) {
                 $(wrapperEl).data('origText.myerrata', fix.orig)
-                    .html(fix.marked);
+                    .html(markEditable(fix.marked));
             }
         }
 
