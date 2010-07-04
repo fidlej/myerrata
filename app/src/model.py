@@ -10,9 +10,9 @@ class Fix(db.Model):
     orig_text = db.TextProperty(required=True)
     new_text = db.TextProperty()
     # The pos tells the position of equal orig texts on a page.
-    pos = db.IntegerProperty(required=True)
+    pos = db.IntegerProperty(required=True, indexed=False)
     # The page_order defines visual ordering of fixes on a page.
-    page_order = db.IntegerProperty(required=True)
+    page_order = db.IntegerProperty(required=True, indexed=False)
     updated_at = db.IntegerProperty(required=True)
 
     @classmethod
