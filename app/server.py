@@ -96,6 +96,16 @@ class Fixes(Handler):
         self.write_json(dict(fixes=results), jsonp_callback=callback)
 
 
+class Search(Handler):
+    def get(self):
+        from src import diffing, reading
+
+        q = sane.valid_url_prefix(self.request.get("q"))
+        fixes = reading.search(q, limit=100)
+        for fix in fixes:
+            marked = diffing.mark_changes(fix.orig_text, fix.new_text)
+            self.write("%s: %s<br/>\n" % (fix.url, marked))
+
 
 class NotFound404(Handler):
     def get(self):
@@ -111,6 +121,7 @@ app = webapp.WSGIApplication(
         [
             ("/api/save", Save),
             ("/api/fixes", Fixes),
+            ("/search", Search),
             ("/.*", NotFound404),
         ],
         debug=DEBUG)
