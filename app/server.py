@@ -28,14 +28,6 @@ class Handler(webapp.RequestHandler):
         self.write(templating.render(template, **kw))
 
 
-def _mark_editable(html):
-    # The space around the marked text is important.
-    # It allows the user to add a text outside of a <del> tag.
-    if "<" in html:
-        html = "%s " % html
-    return '<span contenteditable="true">%s</span>' % html
-
-
 class Save(Handler):
     def options(self):
         self._set_cors_headers()
@@ -66,12 +58,12 @@ class Save(Handler):
 
         url = self.request.get("url")
         orig = self.request.get("orig")
-        new = self.request.get("new").rstrip()
+        new = self.request.get("new")
         pos = sane.valid_int(self.request.get("pos"))
         page_order = sane.valid_int(self.request.get("page_order"))
 
         fix = writing.save_fix(url, orig, new, pos, page_order)
-        marked = _mark_editable(fix.mark_changes())
+        marked = fix.mark_changes()
 
         result = dict(marked=marked);
         self._set_cors_headers()
@@ -88,7 +80,7 @@ class Fixes(Handler):
         fixes = reading.find_fixes(url)
         results = []
         for fix in fixes:
-            marked = _mark_editable(fix.mark_changes())
+            marked = fix.mark_changes()
             results.append(dict(
                 orig=fix.orig_text,
                 pos=fix.pos,

@@ -145,7 +145,8 @@ var startEditing = (function() {
 
         saveButton.insertAfter(this)
             .click(function() {
-                var newText = wrapper.clone(false).find('del').remove()
+                var newText = wrapper.clone(false)
+                    .find('del, .myerrata-space').remove()
                     .end().text();
                 var pos = wrapper.data('pos.myerrata') || 0;
                 var page_order = wrapper.data('pageOrder.myerrata');
@@ -161,7 +162,11 @@ var startEditing = (function() {
                 if (isCrossPostSupported()) {
                     crossPost(target, data,
                         function(data) {
-                            wrapper.html(data.marked);
+                            // The extra space allows to add unstyled text.
+                            var suffix = '<span class="myerrata-space"> </span></span>';
+                            wrapper.html(
+                                '<span contenteditable="true">'
+                                + data.marked + suffix);
                             removeButtons();
                         },
                         'json'
