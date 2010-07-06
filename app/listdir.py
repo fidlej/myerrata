@@ -42,7 +42,7 @@ def _render_dir(path):
     filenames.sort()
     output = "<html><head><title>%s</title><body>\n" % escape(path)
     output += "<b>%s</b>" % _link_to_components(path)
-    output += "<ul>\n"
+    output += "<hr/><ul>\n"
     for name in filenames:
         displayname = name
         child_path  = "%s/%s" % (path, name)
@@ -51,7 +51,7 @@ def _render_dir(path):
 
         output += '<li>%s</li>\n' % _link_to(child_path, displayname)
 
-    output += "</ul></body></html>"
+    output += "</ul><hr/></body></html>"
     return output
 
 def _link_to_components(path):
