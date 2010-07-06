@@ -31,6 +31,10 @@ handlers:
 - url: /stats.*
   script: $PYTHON_LIB/google/appengine/ext/appstats/ui.py
 
+- url: /listdir.*
+  script: listdir.py
+  login: admin
+
 - url: .*
   script: server.py
 
