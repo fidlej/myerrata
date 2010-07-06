@@ -36,11 +36,14 @@ ol li {
 body {
     font-family: Arial,Helvetica,sans-serif;
     font-size: 100%;
+}
+
+/* Homepage */
+body.homepage {
     background-color: #E5E5FF;
 }
 
-
-#content {
+#intro {
     margin: 20px 10%;
     padding: 20px 30px;
     background-color: #FFFFFF;
@@ -64,4 +67,12 @@ a.bookmarklet {
     background-color: #eee; color: black;
     font-family: sans-serif; font-size: 10pt; text-decoration: none;
 }
+
+/* Search */
+#content {
+    padding: 16px;
+}
+
+del { color: red}
+ins { color: green}
 
