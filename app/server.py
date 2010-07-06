@@ -5,6 +5,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 from src import config, sane
 
+
 class Handler(webapp.RequestHandler):
     def set_header(self, name, value):
         self.response.headers[name] = value
@@ -109,6 +110,11 @@ class NotFound404(Handler):
         self.get()
 
 
+def _fix_sys_path():
+    import os, sys
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    sys.path.insert(0, os.path.join(script_dir, "lib"))
+
 app = webapp.WSGIApplication(
         [
             ("/api/save", Save),
@@ -122,7 +128,8 @@ def main():
     run_wsgi_app(app)
 
 if __name__ == "__main__":
-    from pylib import autoretry
+    _fix_sys_path()
+    import autoretry
     autoretry.autoretry_datastore_timeouts()
     main()
 
