@@ -43,9 +43,13 @@ def _render_dir(path):
     output = "<html><head><title>%s</title><body>\n" % escape(path)
     output += "<b>%s</b>" % _link_to_components(path)
     output += "<hr/><ul>\n"
+    prefix = path
+    if prefix:
+        prefix += "/"
+
     for name in filenames:
         displayname = name
-        child_path  = "%s/%s" % (path, name)
+        child_path = prefix + name
         if os.path.isdir(_onfs(child_path)):
             displayname += "/"
 
@@ -60,18 +64,18 @@ def _link_to_components(path):
     if not path:
         return output
 
-    parents = ""
+    prefix = ""
     for part in path.split("/"):
-        part_path = "%s/%s" % (parents, part)
-        output += _link_to(part_path, part)
+        child_path = prefix + part
+        output += _link_to(child_path, part)
         output += " / "
-        parents = part_path
+        prefix = child_path + "/"
 
     return output
 
 def _link_to(path, name):
     return '<a href="%s">%s</a>' % (
-        urllib.quote(LISTDIR_URL + path), escape(name))
+        urllib.quote(LISTDIR_URL + "/" + path), escape(name))
 
 def _render_file(path):
     return open(_onfs(path), "rb").read()
