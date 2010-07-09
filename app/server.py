@@ -28,7 +28,7 @@ class Handler(webapp.RequestHandler):
         self.write(templating.render(template, **kw))
 
 
-class Save(Handler):
+class SaveHandler(Handler):
     def options(self):
         self._set_cors_headers()
 
@@ -71,7 +71,7 @@ class Save(Handler):
         self.write_json(result)
 
 
-class Fixes(Handler):
+class FixesHandler(Handler):
     def get(self):
         from src import reading
 
@@ -89,7 +89,7 @@ class Fixes(Handler):
         self.write_json(dict(fixes=results), jsonp_callback=callback)
 
 
-class Search(Handler):
+class SearchHandler(Handler):
     def get(self):
         from src import reading
 
@@ -100,7 +100,7 @@ class Search(Handler):
         self.render("search.html", title=title, fixes=fixes, q=q)
 
 
-class NotFound404(Handler):
+class NotFound404Handler(Handler):
     def get(self):
         logging.info('Wrong path: %s', self.request.path)
         self.error(404)
@@ -117,10 +117,10 @@ def _fix_sys_path():
 
 app = webapp.WSGIApplication(
         [
-            ("/api/save", Save),
-            ("/api/fixes", Fixes),
-            ("/search", Search),
-            ("/.*", NotFound404),
+            ("/api/save", SaveHandler),
+            ("/api/fixes", FixesHandler),
+            ("/search", SearchHandler),
+            ("/.*", NotFound404Handler),
         ],
         debug=config.DEBUG)
 
