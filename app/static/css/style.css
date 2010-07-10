@@ -77,6 +77,10 @@ a.bookmarklet {
     padding: 16px;
 }
 
-.fix del { color: #FF5F5F}
-.fix ins { background-color: #97FF97; color: #003800; text-decoration: none}
+.search h2 a { color: #fda603; text-decoration: none}
+.search del { color: #FF5F5F}
+.search ins { background-color: #97FF97; color: #003800; text-decoration: none}
 
+.search form small {
+    color: gray;
+}

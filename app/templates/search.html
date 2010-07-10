@@ -1,21 +1,23 @@
 <%inherit file="base.html"/>
 
-<div id="content">
-<form method="get" action="/search">
+<div id="content" class="search">
+<h2><a href="http://www.myerrata.com/">MyErrata</a></h2>
+<form action="/search">
 <p>
-    <input type="text" name="q" value="${q}"/>
-    <input type="submit" value="Search"/>
+    <small>Search for URL prefixes (e.g., google.com/):</small><br/>
+    <b>URL prefix:</b>&nbsp;&nbsp;<input type="text" name="q" value="${q}" size="50"/>
+    <input type="submit" value="Search"/><br/>
 </p>
 </form>
 
-
+<hr/>
 %for url, fixes in url_fixes:
 <p>
 <a href="http://${url}">${url}</a>
 </p>
 <ul>
 %for fix in fixes:
-    <li class="fix">${fix.mark_changes()}</li>
+    <li>${fix.mark_changes()}</li>
 %endfor%
 </ul>
 %endfor%
