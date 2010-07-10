@@ -304,8 +304,8 @@ function insertDefaultCss() {
     }
     $('<style type="text/css">\n' +
     '.myerrata-hover { background-color: #95d6ff}\n' +
-    '.myerrata-text del { color: red}\n' +
-    '.myerrata-text ins { color: green}\n' +
+    '.myerrata-text del { color: #FF5F5F}\n' +
+    '.myerrata-text ins { background-color: #97FF97; color: #003800; text-decoration: none}\n' +
     '#myerrata_stopbutton { position: fixed; top: 0; right: 0;' +
         'border: 2px groove black; padding: 0 5px 2px;' +
         'background-color: red; color: white;' +

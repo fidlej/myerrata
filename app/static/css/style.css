@@ -77,6 +77,6 @@ a.bookmarklet {
     padding: 16px;
 }
 
-del { color: red}
-ins { color: green}
+.fix del { color: #FF5F5F}
+.fix ins { background-color: #97FF97; color: #003800; text-decoration: none}
 
