@@ -4,7 +4,7 @@ from nose.tools import eq_
 from src import urlbits
 
 def test_normalize_query():
-    f = urlbits.normalize_query
+    f = urlbits.strip_www
     eq_(f(""), "")
     eq_(f("http://localHost:9999/"), "localhost")
     eq_(f("  www.google.com"), "google.com")

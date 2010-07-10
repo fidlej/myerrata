@@ -12,5 +12,6 @@ indexes:
 
 - kind: Fix
   properties:
+  - name: stripped_url
   - name: url
   - name: page_order

@@ -56,7 +56,7 @@ class SaveHandler(Handler):
         self.request.content_type = "application/x-www-form-urlencoded"
         self.request.environ.pop("webob._parsed_post_var", None)
 
-        url = self.request.get("url")
+        url = sane.valid_url(self.request.get("url"))
         orig = self.request.get("orig")
         new = self.request.get("new")
         pos = sane.valid_int(self.request.get("pos"))
@@ -75,7 +75,7 @@ class FixesHandler(Handler):
     def get(self):
         from src import reading
 
-        url = self.request.get("url")
+        url = sane.valid_url(self.request.get("url"))
         callback = self.request.get("callback")
         fixes = reading.find_fixes(url)
         results = []
@@ -93,7 +93,7 @@ class SearchHandler(Handler):
     def get(self):
         from src import reading
 
-        q = sane.valid_url_prefix(self.request.get("q"))
+        q = self.request.get("q")
         fixes = reading.search(q, limit=100)
 
         title = u"%s fixes" % q

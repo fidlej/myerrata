@@ -1,6 +1,10 @@
 
 import re
 
+class BadRequestError(ValueError):
+    pass
+
+
 def valid_int(value):
     """Converts the value to an integer value or zero.
     """
@@ -12,11 +16,17 @@ def valid_int(value):
     return result
 
 
-URL_PREFIX_PATTERN = re.compile(ur"^(?:https?://)?(?:www\.)?([^#]*)")
+URL_PATTERN = re.compile(r"^https?://([^#]+)")
 
-def valid_url_prefix(value):
-    """Returns a URL prefix without the http:// and "www." prefixes.
-    """
-    match = URL_PREFIX_PATTERN.match(value)
-    return match.group(1)
+def valid_url(url):
+    match = URL_PATTERN.match(url)
+    if match is None:
+        #TODO: raise a HTTP error
+        raise BadRequestError("Invalid HTTP URL: %r" % url)
+
+    url = match.group(1)
+    if len(url) > 500:
+        raise BadRequestError("Too long URL: %r" % url)
+
+    return url
 
