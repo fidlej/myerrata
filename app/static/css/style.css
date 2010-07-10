@@ -87,3 +87,6 @@ a.bookmarklet {
 .search form b {
     color: #fda603;
 }
+p.result {
+    margin-bottom: 2px;
+}
