@@ -27,6 +27,15 @@ class Handler(webapp.RequestHandler):
         from src import templating
         self.write(templating.render(template, **kw))
 
+    def handle_exception(self, e, debug_mode):
+        if isinstance(e, sane.BadRequestError):
+            logging.info('Wrong path: %r', self.request.path)
+            self.error(400)
+            self.write(str(e))
+            return
+
+        return webapp.RequestHandler.handle_exception(self, e, debug_mode)
+
 
 class SaveHandler(Handler):
     def options(self):
