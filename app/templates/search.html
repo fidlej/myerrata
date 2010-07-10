@@ -21,6 +21,11 @@
 %endfor%
 </ul>
 %endfor%
+%if not url_fixes:
+<p>
+There are no fixes for URL prefix <b>${q}</b>.
+</p>
+%endif%
 
 <hr/>
 %if limit is not None:

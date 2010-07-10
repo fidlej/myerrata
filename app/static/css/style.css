@@ -40,13 +40,13 @@ body {
 
 /* Homepage */
 body.homepage {
-    background-color: #E5E5FF;
+    background-color: #e5e5ff;
 }
 
 #intro {
     margin: 20px 10%;
     padding: 20px 30px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     background-image: url("/static/img/man.png");
     background-repeat: no-repeat;
     background-position: right top;
@@ -78,9 +78,12 @@ a.bookmarklet {
 }
 
 .search h2 a { color: #fda603; text-decoration: none}
-.search del { color: #FF5F5F}
-.search ins { background-color: #97FF97; color: #003800; text-decoration: none}
+.search del { color: #ff5f5f}
+.search ins { background-color: #97ff97; color: #003800; text-decoration: none}
 
 .search form small {
     color: gray;
+}
+.search form b {
+    color: #fda603;
 }
