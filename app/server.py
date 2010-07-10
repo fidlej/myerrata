@@ -94,11 +94,15 @@ class SearchHandler(Handler):
         from src import reading, visual
 
         q = self.request.get("q")
-        fixes = reading.search(q, limit=100)
+        limit = 100
+        fixes = reading.search(q, limit)
+        if len(fixes) != limit:
+            limit = None 
         url_fixes = visual.group_by_url(fixes)
 
         title = u"%s fixes" % q
-        self.render("search.html", title=title, url_fixes=url_fixes, q=q)
+        self.render("search.html", title=title, url_fixes=url_fixes, q=q,
+                limit=limit)
 
 
 class NotFound404Handler(Handler):

@@ -3,7 +3,7 @@ from nose.tools import eq_
 
 from src import urlbits
 
-def test_normalize_query():
+def test_strip_www():
     f = urlbits.strip_www
     eq_(f(""), "")
     eq_(f("http://localHost:9999/"), "localhost")
@@ -13,3 +13,5 @@ def test_normalize_query():
     eq_(f("www.google.com/search?q=me&lang=en#here"),
             "google.com/search?q=me&lang=en")
     eq_(f("example.com/my/?q=param"), "example.com/my?q=param")
+    eq_(f("ww"), "ww")
+    eq_(f("htt"), "htt")
