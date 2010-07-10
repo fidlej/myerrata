@@ -25,12 +25,12 @@ p, blockquote, form, label, ul, ol {
     margin-bottom: 20px;
 }
 
-ol {
+ol, ul {
     margin-left: 30px;
 }
 
-ol li {
-    margin-bottom: 5px;
+li {
+    margin-bottom: 2px;
 }
 
 body {
@@ -54,6 +54,10 @@ body.homepage {
 
 #top {
     padding-right: 140px;
+}
+
+#intro ol li {
+    margin-bottom: 5px;
 }
 
 #footer {
