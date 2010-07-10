@@ -9,12 +9,15 @@
 </form>
 
 
+%for url, fixes in url_fixes:
+<p>
+<a href="http://${url}">${url}</a>
+</p>
 <ul>
 %for fix in fixes:
-<li><a href="http://${fix.url}">${fix.url}</a>
-${fix.mark_changes()}
-</li>
+    <li>${fix.mark_changes()}</li>
 %endfor%
 </ul>
+%endfor%
 
 </div>
