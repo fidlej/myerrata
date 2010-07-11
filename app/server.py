@@ -39,7 +39,11 @@ class Handler(webapp.RequestHandler):
         return webapp.RequestHandler.handle_exception(self, e, debug_mode)
 
 
-class SaveHandler(Handler):
+class CrossPostHandler(Handler):
+    """Provides a common support for Cross-Origin Resource Sharing (CORS)
+    and iframe POST requests.
+    """
+
     def options(self):
         self._set_cors_headers()
 
@@ -51,8 +55,27 @@ class SaveHandler(Handler):
         self.set_header('Access-Control-Max-Age', str(20*24*3600))
 
     def post(self):
+        # The incoming Content-Type is ignored.
+        # XDomainRequest sends everything as text/plain.
+        self.request.content_type = "application/x-www-form-urlencoded"
+        self.request.environ.pop("webob._parsed_post_var", None)
+
+        result = self.prepare_json_response()
+
+        self._set_cors_headers()
+        # We keep the text/html content-type. It is needed by iframes.
+        self.set_header('Content-Type', 'text/html; charset=utf-8')
+        self.write_json(result)
+
+    def prepare_json_response(self):
+        """Subclasses should return JSON data.
+        """
+        raise NotImplementedError
+
+
+class SaveHandler(CrossPostHandler):
+    def prepare_json_response(self):
         """Saves a typo fix.
-        The request is made by a Cross-Origin Resource Sharing (CORS) Ajax.
 
         GET parameters:
         url ... url of the fixed page.
@@ -62,10 +85,6 @@ class SaveHandler(Handler):
             of the same preceding texts on the page.
         """
         from src import writing
-        # The incoming Content-Type is ignored.
-        # XDomainRequest sends everything as text/plain.
-        self.request.content_type = "application/x-www-form-urlencoded"
-        self.request.environ.pop("webob._parsed_post_var", None)
 
         url = sane.valid_url(self.request.get("url"))
         orig = self.request.get("orig")
@@ -76,10 +95,7 @@ class SaveHandler(Handler):
         fix = writing.save_fix(url, orig, new, pos, page_order)
         marked = fix.mark_changes()
 
-        result = dict(marked=marked);
-        self._set_cors_headers()
-        # We keep the text/html content-type. It is needed by iframes.
-        self.write_json(result)
+        return dict(marked=marked);
 
 
 class FixesHandler(Handler):
@@ -130,6 +146,7 @@ class NotFound404Handler(Handler):
 app = webapp.WSGIApplication(
         [
             ("/api/save", SaveHandler),
+            #("/api/update-gone", UpdateGoneHandler),
             ("/api/fixes", FixesHandler),
             ("/search", SearchHandler),
             ("/.*", NotFound404Handler),
