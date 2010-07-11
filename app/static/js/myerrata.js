@@ -83,6 +83,10 @@ var startEditing = (function() {
         xhr.send($.param(data));
     }
 
+    /**
+     * Posts the data to another domain via a hidden iframe.
+     * Nested data are not supported.
+     */
     function asyncFormPost(url, data) {
         var iframe = $('#myerrata_iframe');
         if (iframe.length !== 1) {
@@ -208,14 +212,6 @@ var startEditing = (function() {
             .appendTo(document.body);
     }
 
-    function postData(target, data) {
-        if (isCrossPostSupported()) {
-            crossPost(target, data);
-        } else {
-            asyncFormPost(target, data);
-        }
-    }
-
     // Applies the existing fixes
     function applyFixes(fixes, origTextWrappers) {
         var gone = [];
@@ -240,11 +236,15 @@ var startEditing = (function() {
             }
         }
 
-        var target = window.MyErrata.host + '/api/update-gone';
-        postData(target, {
-            gone: gone,
-            ungone: ungone
-        });
+        // Only the newer browsers will report gone fixes.
+        if (isCrossPostSupported()) {
+            var target = window.MyErrata.host + '/api/update-gone';
+            crossPost(target, {
+                url: window.location.href,
+                gone: gone,
+                ungone: ungone
+            });
+        }
     }
 
     function createWrappers(fixes) {
