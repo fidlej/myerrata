@@ -12,7 +12,7 @@ def search(query, limit=1000):
     range_end = url_prefix + unichr(0x10ffff)
     q = Fix.gql("""where stripped_url >= :url_prefix
             and stripped_url < :range_end
-            and gone = TRUE
+            and gone = False
             order by stripped_url, url, page_order""",
             url_prefix=url_prefix, range_end=range_end)
     return q.fetch(limit)
