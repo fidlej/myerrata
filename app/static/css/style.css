@@ -94,6 +94,10 @@ p.result {
     margin-bottom: 2px;
 }
 
+.fix {
+    font-size: 80%;
+}
+
 table.result small {
     color: gray;
 }
