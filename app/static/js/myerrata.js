@@ -70,13 +70,15 @@ var startEditing = (function() {
             return;
         }
 
-        xhr.onload = function() {
-            var result = xhr.responseText;
-            if (dataType === 'json') {
-                result = $.parseJSON(xhr.responseText);
-            }
-            callback(result);
-        };
+        if (callback) {
+            xhr.onload = function() {
+                var result = xhr.responseText;
+                if (dataType === 'json') {
+                    result = $.parseJSON(xhr.responseText);
+                }
+                callback(result);
+            };
+        }
         xhr.onerror = logError;
         xhr.send($.param(data));
     }
@@ -206,16 +208,43 @@ var startEditing = (function() {
             .appendTo(document.body);
     }
 
+    function postData(target, data) {
+        if (isCrossPostSupported()) {
+            crossPost(target, data);
+        } else {
+            asyncFormPost(target, data);
+        }
+    }
+
     // Applies the existing fixes
     function applyFixes(fixes, origTextWrappers) {
+        var gone = [];
+        var ungone = [];
         for (var key in fixes) {
             var fix = fixes[key];
             var wrapperEl = (origTextWrappers[fix.orig] || [])[fix.pos];
             if (wrapperEl) {
                 $(wrapperEl).data('origText.myerrata', fix.orig)
                     .html(markEditable(fix.marked));
+                if (fix.gone) {
+                    ungone.push({
+                        orig: fix.orig,
+                        pos: fix.pos
+                    });
+                }
+            } else {
+                gone.push({
+                    orig: fix.orig,
+                    pos: fix.pos
+                });
             }
         }
+
+        var target = window.MyErrata.host + '/api/update-gone';
+        postData(target, {
+            gone: gone,
+            ungone: ungone
+        });
     }
 
     function createWrappers(fixes) {
