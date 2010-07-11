@@ -12,15 +12,16 @@
 
 <hr/>
 %for url, fixes in url_fixes:
-<p class="result">
+<div class="result">
+<p>
 <a href="http://${url}">${url}</a>
 </p>
-<table class="result">
+<ul>
 %for fix in fixes:
-    <tr><td><label><input title="A gone text isn't found on the page anymore." disabled="disabled" type="checkbox"${formatting.attr_gone_checked(fix)}/>&nbsp;&nbsp;</label></td><td${formatting.attr_class(fix)}>${fix.mark_changes()}</td></tr>
+    <li class="fix">${fix.mark_changes()}</li>
 %endfor
-    <tr><td colspan="2"><small>Gone<small></td></tr>
-</table>
+</ul>
+</div>
 %endfor
 %if not url_fixes:
 <p>

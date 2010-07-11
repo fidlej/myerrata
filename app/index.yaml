@@ -12,6 +12,13 @@ indexes:
 
 - kind: Fix
   properties:
+  - name: gone
+  - name: stripped_url
+  - name: url
+  - name: page_order
+
+- kind: Fix
+  properties:
   - name: stripped_url
   - name: url
   - name: page_order

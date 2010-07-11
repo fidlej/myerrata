@@ -10,6 +10,10 @@ def search(query, limit=1000):
     url_prefix = urlbits.strip_www(query)
 
     range_end = url_prefix + unichr(0x10ffff)
-    q = Fix.gql("where stripped_url >= :url_prefix and stripped_url < :range_end order by stripped_url, url, page_order", url_prefix=url_prefix, range_end=range_end)
+    q = Fix.gql("""where stripped_url >= :url_prefix
+            and stripped_url < :range_end
+            and gone = TRUE
+            order by stripped_url, url, page_order""",
+            url_prefix=url_prefix, range_end=range_end)
     return q.fetch(limit)
 

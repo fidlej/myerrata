@@ -90,7 +90,7 @@ a.bookmarklet {
     color: #fda603;
 }
 
-p.result {
+.result p {
     margin-bottom: 2px;
 }
 
@@ -98,10 +98,3 @@ p.result {
     font-size: 80%;
 }
 
-table.result small {
-    color: gray;
-}
-
-td.gone {
-    color: gray;
-}
