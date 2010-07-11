@@ -229,11 +229,17 @@ var startEditing = (function() {
                     });
                 }
             } else {
-                gone.push({
-                    orig: fix.orig,
-                    pos: fix.pos
-                });
+                if (!fix.gone) {
+                    gone.push({
+                        orig: fix.orig,
+                        pos: fix.pos
+                    });
+                }
             }
+        }
+
+        if (gone.length === 0 && ungone.length === 0) {
+            return;
         }
 
         // Only the newer browsers will report gone fixes.
