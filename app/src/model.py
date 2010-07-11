@@ -25,7 +25,7 @@ class Fix(db.Model):
         """
         from src import urlbits
         stripped_url = urlbits.strip_www(url)
-        key_name = _compute_key_name(url, pos, orig_text)
+        key_name = compute_fix_key_name(url, pos, orig_text)
         updated_at = int(time.time())
         return Fix(key_name=key_name,
                 url=url, stripped_url=stripped_url,
@@ -41,7 +41,7 @@ class Fix(db.Model):
         return diffing.mark_changes(self.orig_text, self.new_text)
 
 
-def _compute_key_name(url, pos, orig_text):
+def compute_fix_key_name(url, pos, orig_text):
     import base64
     import hashlib
     domain = url.split('/', 1)[0][:400]

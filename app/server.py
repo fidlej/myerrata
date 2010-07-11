@@ -98,6 +98,23 @@ class SaveHandler(CrossPostHandler):
         return dict(marked=marked);
 
 
+class UpdateGoneHandler(CrossPostHandler):
+    def prepare_json_response(self):
+        """Marks not-found fixes as gone
+        and umarks found gone fixes.
+        """
+        from src import writing
+        from django.utils import simplejson
+        json = simplejson.loads(self.request.get("json"))
+
+        url = sane.valid_url(json.get("url", u""))
+        gone = json["gone"]
+        ungone = json["ungone"]
+        writing.update_gone(url, gone, ungone)
+
+        return dict(success=True)
+
+
 class FixesHandler(Handler):
     def get(self):
         from src import reading
@@ -146,7 +163,7 @@ class NotFound404Handler(Handler):
 app = webapp.WSGIApplication(
         [
             ("/api/save", SaveHandler),
-            #("/api/update-gone", UpdateGoneHandler),
+            ("/api/update-gone", UpdateGoneHandler),
             ("/api/fixes", FixesHandler),
             ("/search", SearchHandler),
             ("/.*", NotFound404Handler),

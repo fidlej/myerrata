@@ -237,13 +237,14 @@ var startEditing = (function() {
         }
 
         // Only the newer browsers will report gone fixes.
-        if (isCrossPostSupported()) {
+        if (window.JSON && window.JSON.stringify && isCrossPostSupported()) {
             var target = window.MyErrata.host + '/api/update-gone';
-            crossPost(target, {
+            var data = window.JSON.stringify({
                 url: window.location.href,
                 gone: gone,
                 ungone: ungone
             });
+            crossPost(target, {json: data});
         }
     }
 
