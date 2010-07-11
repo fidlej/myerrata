@@ -206,6 +206,18 @@ var startEditing = (function() {
             .appendTo(document.body);
     }
 
+    // Applies the existing fixes
+    function applyFixes(fixes, origTextWrappers) {
+        for (var key in fixes) {
+            var fix = fixes[key];
+            var wrapperEl = (origTextWrappers[fix.orig] || [])[fix.pos];
+            if (wrapperEl) {
+                $(wrapperEl).data('origText.myerrata', fix.orig)
+                    .html(markEditable(fix.marked));
+            }
+        }
+    }
+
     function createWrappers(fixes) {
         // Wraps all non-empty text nodes into
         // non-editable and editable <span/>.
@@ -230,16 +242,7 @@ var startEditing = (function() {
         // before replacing the text nodes by fixes.
         var wrappers = textNodes.parent().parent();
         textNodes = null;
-
-        // Applying the existing fixes
-        for (var key in fixes) {
-            var fix = fixes[key];
-            var wrapperEl = (origTextWrappers[fix.orig] || [])[fix.pos];
-            if (wrapperEl) {
-                $(wrapperEl).data('origText.myerrata', fix.orig)
-                    .html(markEditable(fix.marked));
-            }
-        }
+        applyFixes(fixes, origTextWrappers);
 
         // Remembering wrappers with non-zero pos
         for (var orig in origTextWrappers) {

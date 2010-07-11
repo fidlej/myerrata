@@ -95,6 +95,7 @@ class FixesHandler(Handler):
             results.append(dict(
                 orig=fix.orig_text,
                 pos=fix.pos,
+                gone=fix.gone,
                 marked=marked))
 
         self.write_json(dict(fixes=results), jsonp_callback=callback)
