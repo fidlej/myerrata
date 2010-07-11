@@ -19,7 +19,7 @@
 %for fix in fixes:
     <tr><td><label><input type="checkbox"${formatting.attr_gone_checked(fix)}/>&nbsp;&nbsp;</label></td><td${formatting.attr_class(fix)}>${fix.mark_changes()}</td></tr>
 %endfor
-    <tr><td><small>Gone<small></td><td></td></tr>
+    <tr><td colspan="2"><small>Gone<small></td></tr>
 </table>
 %endfor
 %if not url_fixes:
