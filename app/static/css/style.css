@@ -20,8 +20,9 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 { font-size: 160%; }
 h2 { font-size: 120%; }
+small { font-size: 80%; }
 
-p, blockquote, form, label, ul, ol {
+p, blockquote, form, label, ul, ol, table {
     margin-bottom: 20px;
 }
 
@@ -84,9 +85,19 @@ a.bookmarklet {
 .search form small {
     color: gray;
 }
+
 .search form b {
     color: #fda603;
 }
+
 p.result {
     margin-bottom: 2px;
+}
+
+table.result small {
+    color: gray;
+}
+
+td.gone {
+    color: gray;
 }

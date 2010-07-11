@@ -25,7 +25,8 @@ class Handler(webapp.RequestHandler):
         self.write(result)
 
     def render(self, template, **kw):
-        from src import templating
+        from src import templating, formatting
+        kw["formatting"] = formatting
         self.write(templating.render(template, **kw))
 
     def handle_exception(self, e, debug_mode):

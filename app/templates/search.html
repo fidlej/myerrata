@@ -15,21 +15,22 @@
 <p class="result">
 <a href="http://${url}">${url}</a>
 </p>
-<ul>
+<table class="result">
 %for fix in fixes:
-    <li>${fix.mark_changes()}</li>
-%endfor%
-</ul>
-%endfor%
+    <tr><td><input type="checkbox"/></td><td${formatting.style_fix(fix)}>${fix.mark_changes()}</td></tr>
+%endfor
+    <tr><td><small>Gone<small></td><td></td></tr>
+</table>
+%endfor
 %if not url_fixes:
 <p>
 There are no fixes for URL prefix <b>${q}</b>.
 </p>
-%endif%
+%endif
 
 <hr/>
 %if limit is not None:
 <p>Displaying the first ${limit} fixes.
-%endif%
+%endif
 
 </div>

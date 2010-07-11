@@ -15,6 +15,8 @@ class Fix(db.Model):
     # The page_order defines visual ordering of fixes on a page.
     page_order = db.IntegerProperty(required=True)
     updated_at = db.IntegerProperty(required=True)
+    # A fix is marked as gone if the orig_text is no longer on the page.
+    gone = db.BooleanProperty(required=True, default=False)
 
     @classmethod
     def prepare(cls, url, orig_text, new_text, pos, page_order):
