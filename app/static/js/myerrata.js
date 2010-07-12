@@ -252,7 +252,7 @@ var startEditing = (function() {
                 gone: gone,
                 ungone: ungone
             });
-            crossPost(target, {json: data});
+            crossPost(target, {json: data}, null, null);
         }
     }
 
