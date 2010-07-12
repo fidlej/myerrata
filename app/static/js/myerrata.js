@@ -326,7 +326,6 @@ function fetchFixes() {
         data: {
             url: window.location.href
         },
-        cache: false,
         dataType: 'jsonp',
         error: logError,
         success: function(data) {
