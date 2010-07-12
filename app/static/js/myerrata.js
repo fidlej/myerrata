@@ -216,8 +216,10 @@ var startEditing = (function() {
     function applyFixes(fixes, origTextWrappers) {
         var gone = [];
         var ungone = [];
-        for (var key in fixes) {
-            var fix = fixes[key];
+        // Ignore an incompatible toJSON from Prototype.js.
+        gone.toJSON = ungone.toJSON = undefined;
+
+        for (var i = 0, fix; fix = fixes[i]; i++) {
             var wrapperEl = (origTextWrappers[fix.orig] || [])[fix.pos];
             if (wrapperEl) {
                 $(wrapperEl).data('origText.myerrata', fix.orig)
