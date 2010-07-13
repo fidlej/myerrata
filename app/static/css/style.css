@@ -61,8 +61,11 @@ body.homepage {
     margin-bottom: 5px;
 }
 
-#footer {
+#intro #footer {
     margin-top: 80px;
+}
+
+#footer {
     font-size: 75%;
     text-align: center;
 }
