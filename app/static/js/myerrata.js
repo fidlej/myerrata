@@ -279,7 +279,7 @@ var startEditing = (function() {
             var list = origTextWrappers[this.nodeValue] || [];
             list.push(wrapperEl);
             origTextWrappers[this.nodeValue] = list;
-            $(wrapperEl).data('pageOrder.myerrata', i);
+            $.data(wrapperEl, 'pageOrder.myerrata', i);
         });
 
         // It is needed to get the wrappers
