@@ -257,15 +257,21 @@ var startEditing = (function() {
     }
 
     function createWrappers(fixes) {
-        // Wraps all non-empty text nodes into
-        // non-editable and editable <span/>.
+        var textNodes = $('*', document.body).not('script, iframe, .myerrata-noneditable').add(document.body).contents().filter(function() {
+            return this.nodeType === 3 && $.trim(this.nodeValue) !== '';
+        });
+
+        // Wraps all text nodes into
+        // a non-editable <div/> and an editable <span/>.
         // The editable <span/> could be modified or duplicated by the user.
         //
         // A <div/> is used instead <span/> to get around a FF bug:
         // https://bugzilla.mozilla.org/show_bug.cgi?id=546662
-        var textNodes = $('*', document.body).not('script, iframe, .myerrata-noneditable').add(document.body).contents().filter(function() {
-            return this.nodeType === 3 && $.trim(this.nodeValue) !== '';
-        }).wrap('<div style="display:inline" class="myerrata-text"><span contenteditable="true" /></span>');
+        textNodes.each(function() {
+            var wrapper = $('<div style="display:inline" class="myerrata-text"><span contenteditable="true" /></span>');
+            wrapper.insertBefore(this);
+            wrapper.children().append(this);
+        });
 
         var origTextWrappers = {};
         textNodes.each(function(i) {
