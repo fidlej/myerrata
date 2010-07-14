@@ -263,7 +263,7 @@ var startEditing = (function() {
         //
         // A <div/> is used instead <span/> to get around a FF bug:
         // https://bugzilla.mozilla.org/show_bug.cgi?id=546662
-        var textNodes = $('*', document.body).not('script').not('.myerrata-noneditable').add(document.body).contents().filter(function() {
+        var textNodes = $('*', document.body).not('script, iframe, .myerrata-noneditable').add(document.body).contents().filter(function() {
             return this.nodeType === 3 && $.trim(this.nodeValue) !== '';
         }).wrap('<div style="display:inline" class="myerrata-text"><span contenteditable="true" /></span>');
 
