@@ -268,7 +268,7 @@ var startEditing = (function() {
         // A <div/> is used instead <span/> to get around a FF bug:
         // https://bugzilla.mozilla.org/show_bug.cgi?id=546662
         textNodes.each(function() {
-            var wrapper = $('<div style="display:inline" class="myerrata-text"><span contenteditable="true" /></span>');
+            var wrapper = $('<div style="display:inline" class="myerrata-text"><span /></span>');
             wrapper.insertBefore(this);
             wrapper.children().append(this);
         });
@@ -281,12 +281,7 @@ var startEditing = (function() {
             origTextWrappers[this.nodeValue] = list;
             $.data(wrapperEl, 'pageOrder.myerrata', i);
         });
-
-        // It is needed to get the wrappers
-        // before replacing the text nodes by fixes.
-        var wrappers = textNodes.parent().parent();
         textNodes = null;
-        applyFixes(fixes, origTextWrappers);
 
         // Remembering wrappers with non-zero pos
         for (var orig in origTextWrappers) {
@@ -296,30 +291,29 @@ var startEditing = (function() {
             }
         }
 
-        return wrappers;
+        return origTextWrappers;
     }
 
-    var wrappersCreated = false;
+    var origTextWrappers = undefined;
 
     return function() {
         state.editingEnabled = true;
-        var wrappers;
-        if (!wrappersCreated) {
-            if (state.fixes === undefined) {
-                // We will wait for the Ajax result.
-                return;
-            }
-
-            wrappers = createWrappers(state.fixes);
+        if (origTextWrappers === undefined) {
+            origTextWrappers = createWrappers(state.fixes);
             createStopButton();
-            wrappersCreated = true;
+        }
+        $("#myerrata_stopbutton").show('fast');
+
+        if (state.fixes === undefined) {
+            // We will wait for the Ajax result.
+            return;
+        } else if (state.fixes !== null) {
+            applyFixes(state.fixes, origTextWrappers);
+            origTextWrappers = null;
             state.fixes = null;
-        } else {
-            wrappers = $('.myerrata-text');
         }
 
-        $("#myerrata_stopbutton").show('fast');
-        wrappers.bind('mouseenter.myerrata', lightBg)
+        $('.myerrata-text').bind('mouseenter.myerrata', lightBg)
             .bind('mouseleave.myerrata', revertBg)
             .bind('click.myerrata', addSubmitButtons)
             .find('*').attr('contentEditable', true);
