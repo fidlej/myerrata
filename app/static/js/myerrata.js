@@ -302,7 +302,7 @@ var startEditing = (function() {
             origTextWrappers = createWrappers(state.fixes);
             createStopButton();
         }
-        $("#myerrata_stopbutton").show('fast');
+        $('#myerrata_stopbutton').show('fast');
 
         if (state.fixes === undefined) {
             // We will wait for the Ajax result.
@@ -355,7 +355,7 @@ function insertDefaultCss() {
 
 function stopEditing() {
     state.editingEnabled = false;
-    $("#myerrata_stopbutton").hide();
+    $('#myerrata_stopbutton').hide();
     $('.myerrata-text').unbind('.myerrata')
         .find('*').attr('contentEditable', false);
 }
