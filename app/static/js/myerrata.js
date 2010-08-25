@@ -286,8 +286,8 @@ var startEditing = (function() {
         // Remembering wrappers with non-zero pos
         for (var orig in origTextWrappers) {
             var nodes = origTextWrappers[orig];
-            for (var i = 1, wrapperEl; wrapperEl = nodes[i]; i++) {
-                $(wrapperEl).data('pos.myerrata', i);
+            for (var i = 1, len = nodes.length; i < len; i++) {
+                $(nodes[i]).data('pos.myerrata', i);
             }
         }
 
